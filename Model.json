@@ -1,0 +1,285 @@
+{
+  "scene": {
+    "id": 1,
+    "name": "Garden",
+    "description": "3DAsset",
+    "models": {
+      "building": [
+        {
+          "id": "Building_A",
+          "name": "Building_A",
+          "type": "Building",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Building/Building_A.FBX"
+        },
+        {
+          "id": "Building_B",
+          "name": "Building_B",
+          "type": "Building",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Building/Building_B.FBX"
+        },
+        {
+          "id": "Building_C",
+          "name": "Building_C",
+          "type": "Building",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Building/Building_C.FBX"
+        },
+        {
+          "id": "Pavillion_Large",
+          "name": "Pavillion_Large",
+          "type": "Building",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Building/Pavillion_Large.FBX"
+        },
+        {
+          "id": "Pavillion_Medium",
+          "name": "Pavillion_Medium",
+          "type": "Building",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Building/Pavillion_Medium.FBX"
+        }
+      ],
+      "plant": [
+        {
+          "id": "Flower_A",
+          "name": "Flower_A",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Flower_A.FBX"
+        },
+        {
+          "id": "Flower_B",
+          "name": "Flower_B",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Flower_B.FBX"
+        },
+        {
+          "id": "Flower_C",
+          "name": "Flower_C",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Flower_C.FBX"
+        },
+        {
+          "id": "Flower_D",
+          "name": "Flower_D",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Flower_D.FBX"
+        },
+        {
+          "id": "Bamboo_A",
+          "name": "Bamboo_A",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Bamboo_A.FBX"
+        },
+        {
+          "id": "Bamboo_B",
+          "name": "Bamboo_B",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Bamboo_B.FBX"
+        },
+        {
+          "id": "Bamboo_C",
+          "name": "Bamboo_C",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Bamboo_C.FBX"
+        },
+        {
+          "id": "Grass_A",
+          "name": "Grass_A",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Grass_A.FBX"
+        },
+        {
+          "id": "Grass_B",
+          "name": "Grass_B",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Grass_B.FBX"
+        },
+        {
+          "id": "Lotus_A",
+          "name": "Lotus_A",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Lotus_A.FBX"
+        },
+        {
+          "id": "Lotus_B",
+          "name": "Lotus_B",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Lotus_B.FBX"
+        },
+        {
+          "id": "Lotus_Flower_A",
+          "name": "Lotus_Flower_A",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Lotus_Flower_A.FBX"
+        },
+        {
+          "id": "Lotus_Flower_B",
+          "name": "Lotus_Flower_B",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Lotus_Flower_B.FBX"
+        },
+        {
+          "id": "Plant_A",
+          "name": "Plant_A",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Plant_A.FBX"
+        },
+        {
+          "id": "Plant_B",
+          "name": "Plant_B",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/Plant_B.FBX"
+        },
+        {
+          "id": "shaggy_soldier",
+          "name": "shaggy_soldier",
+          "type": "Plant",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Plant/shaggy_soldier.FBX"
+        }
+      ],
+      "prop": [
+        {
+          "id": "Bench",
+          "name": "Bench",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Bench.FBX"
+        },
+        {
+          "id": "Bins",
+          "name": "Bins",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Bins.FBX"
+        },
+        {
+          "id": "Bridge",
+          "name": "Bridge",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Bridge.FBX"
+        },
+        {
+          "id": "Stair",
+          "name": "Stair",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Stair.FBX"
+        },
+        {
+          "id": "Statue_A",
+          "name": "Statue_A",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Statue_A.FBX"
+        },
+        {
+          "id": "Statue_B",
+          "name": "Statue_B",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Statue_B.FBX"
+        },
+        {
+          "id": "Wooden_Boat",
+          "name": "Wooden_Boat",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Wooden_Boat.FBX"
+        },
+        {
+          "id": "Wooden_Paddle",
+          "name": "Wooden_Paddle",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Wooden_Paddle.FBX"
+        },
+        {
+          "id": "Zigzag_Bridge",
+          "name": "Zigzag_Bridge",
+          "type": "Prop",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Prop/Zigzag_Bridge.FBX"
+        }
+      ],
+      "rock": [
+        {
+          "id": "TH_Rock_A",
+          "name": "TH_Rock_A",
+          "type": "Rock",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Rock/TH_Rock_A.FBX"
+        },
+        {
+          "id": "TH_Rock_B",
+          "name": "TH_Rock_B",
+          "type": "Rock",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Rock/TH_Rock_B.FBX"
+        },
+        {
+          "id": "Rock_A",
+          "name": "Rock_A",
+          "type": "Rock",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Rock/Rock_A.FBX"
+        },
+        {
+          "id": "Rock_B",
+          "name": "Rock_B",
+          "type": "Rock",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Rock/Rock_B.FBX"
+        },
+        {
+          "id": "Rock_C",
+          "name": "Rock_C",
+          "type": "Rock",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Rock/Rock_C.FBX"
+        }
+      ],
+      "tree": [
+        {
+          "id": "beech_tree_01",
+          "name": "beech_tree_01",
+          "type": "Tree",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Tree/beech_tree_01.FBX"
+        },
+        {
+          "id": "beech_tree_02",
+          "name": "beech_tree_02",
+          "type": "Tree",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Tree/beech_tree_02.FBX"
+        },
+        {
+          "id": "beech_tree_03",
+          "name": "beech_tree_03",
+          "type": "Tree",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Tree/beech_tree_03.FBX"
+        },
+        {
+          "id": "beech_tree_04",
+          "name": "beech_tree_04",
+          "type": "Tree",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Tree/beech_tree_04.FBX"
+        },
+        {
+          "id": "beech_tree_05",
+          "name": "beech_tree_05",
+          "type": "Tree",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Tree/beech_tree_05.FBX"
+        }
+      ],
+      "wall": [
+        {
+          "id": "Wall_400x300",
+          "name": "Wall_400x300",
+          "type": "Wall",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Wall/Wall_400x300.FBX"
+        },
+        {
+          "id": "Wall_400x300_Door",
+          "name": "Wall_400x300_Door",
+          "type": "Wall",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Wall/Wall_400x300_Door.FBX"
+        },
+        {
+          "id": "Wall_800x300",
+          "name": "Wall_800x300",
+          "type": "Wall",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Wall/Wall_800x300.FBX"
+        },
+        {
+          "id": "Wall_800x300_Corner",
+          "name": "Wall_800x300_Corner",
+          "type": "Wall",
+          "path": "Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Wall/Wall_800x300_Corner.FBX"
+        }
+      ]
+    }
+  }
+}
