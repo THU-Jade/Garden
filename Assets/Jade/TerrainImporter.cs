@@ -59,6 +59,9 @@ public class TerrainImporter : EditorWindow
         terrainData.size = new Vector3(terrainWidth, terrainHeight, terrainLength);
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
 
+        // 应用地形材质
+        ApplyTerrainMaterial(terrainObject);
+
         // 导入高度图
         byte[] heightmapBytes = File.ReadAllBytes(heightmapPath);
         Texture2D heightmapTexture = new Texture2D(2, 2);
@@ -93,23 +96,19 @@ public class TerrainImporter : EditorWindow
         lightGameObject.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
     }
     //指定材质
-    void ApplyTerrainMaterial(TerrainData terrainData)
+    void ApplyTerrainMaterial(GameObject terrainObject)
     {
-        if (terrainMaterial != null)
+        if (terrainMaterial != null && terrainObject != null)
         {
-            GameObject terrainObject = GameObject.Find("Terrain");
-            if (terrainObject != null)
+            Terrain terrain = terrainObject.GetComponent<Terrain>();
+            if (terrain != null)
             {
-                Terrain terrain = terrainObject.GetComponent<Terrain>();
-                if (terrain != null)
-                {
-                    terrain.materialTemplate = terrainMaterial;
-                }
+                terrain.materialTemplate = terrainMaterial;
             }
         }
         else
         {
-          //  Debug.LogWarning("No terrain material specified.");
+            UnityEngine.Debug.LogWarning("No terrain material specified or terrain object is null.");
         }
     }
 }
