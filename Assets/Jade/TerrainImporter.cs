@@ -68,8 +68,8 @@ public class TerrainImporter : EditorWindow
         // 添加平行光
         CreateDirectionalLight();
 
-        // 创建全局体积
-        InstantiateGlobalVolumePrefab();
+        // 创建全局体积和水体
+        GlobalPrefab();
 
         // 创建地形
         TerrainData terrainData = new TerrainData();
@@ -133,14 +133,22 @@ public class TerrainImporter : EditorWindow
         }
     }
 
-    void InstantiateGlobalVolumePrefab()
+    void GlobalPrefab()
     {
         // 加载Prefab
         GameObject globalVolumePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Jade/Environment/Global Volume.prefab");
-        if (globalVolumePrefab != null)
+        GameObject waterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Jade/Environment/Water System.prefab");
+        if (globalVolumePrefab != null && waterPrefab != null)
         {
             // 实例化Prefab到当前激活的场景中
             PrefabUtility.InstantiatePrefab(globalVolumePrefab);
+            GameObject waterInstance = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab);
+
+            // 自定义水体Y轴的数值
+            float customYValue = 50.0f; // 水体高度
+            Vector3 position = waterInstance.transform.position;
+            position.y = customYValue;
+            waterInstance.transform.position = position;
         }
         else
         {
