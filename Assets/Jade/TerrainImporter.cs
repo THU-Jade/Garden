@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 using System.IO;
 using System.Diagnostics;
 
@@ -12,6 +13,20 @@ public class TerrainImporter : EditorWindow
     private int terrainWidth = 1000; // 地形的宽度
     private int terrainLength = 1000; // 地形的长度
     private int terrainHeight = 600; // 地形的最大高度
+
+    void OnEnable()
+    {
+        // 在OnEnable中加载默认材质//
+        LoadDefaultMaterial();
+    }
+
+    private void LoadDefaultMaterial()
+    {
+        if (terrainMaterial == null)
+        {
+            terrainMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Jade/Shader/M_TerrainBlend.mat");
+        }
+    }
 
     [MenuItem("Tools/Terrain Importer")]
     public static void ShowWindow()
@@ -53,6 +68,9 @@ public class TerrainImporter : EditorWindow
         // 添加平行光
         CreateDirectionalLight();
 
+        // 创建全局体积
+        InstantiateGlobalVolumePrefab();
+
         // 创建地形
         TerrainData terrainData = new TerrainData();
         terrainData.heightmapResolution = 512; // 根据需要调整
@@ -90,7 +108,10 @@ public class TerrainImporter : EditorWindow
         // 设置光源属性
         lightComp.type = LightType.Directional;
         lightComp.color = Color.white;
-        lightComp.intensity = 1.0f;
+        lightComp.intensity = 1.5f;
+
+        // 开启阴影
+        lightComp.shadows = LightShadows.Soft;
 
         // 设置光源方向
         lightGameObject.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
@@ -109,6 +130,21 @@ public class TerrainImporter : EditorWindow
         else
         {
             UnityEngine.Debug.LogWarning("No terrain material specified or terrain object is null.");
+        }
+    }
+
+    void InstantiateGlobalVolumePrefab()
+    {
+        // 加载Prefab
+        GameObject globalVolumePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Jade/Environment/Global Volume.prefab");
+        if (globalVolumePrefab != null)
+        {
+            // 实例化Prefab到当前激活的场景中
+            PrefabUtility.InstantiatePrefab(globalVolumePrefab);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("Failed to load Global Volume prefab.");
         }
     }
 }

@@ -10,7 +10,7 @@ public class VegetationPlacer : EditorWindow
     private List<GameObject> vegetationPrefabs = new List<GameObject>();
     private List<int> vegetationCounts = new List<int>();
     private float minScale = 0.8f; // 最小缩放
-    private float maxScale = 1.2f; // 最大缩放
+    private float maxScale = 3.5f; // 最大缩放
     private GameObject vegetationParent; // 存储所有植被的父对象
 
     [MenuItem("Tools/Vegetation Placer")]
@@ -19,7 +19,47 @@ public class VegetationPlacer : EditorWindow
         GetWindow<VegetationPlacer>("Vegetation Placer");
     }
 
-    void OnGUI()
+    void OnEnable()
+    {
+        FindTerrainInScene();
+        // 在启用时加载默认的FBX模型
+        LoadDefaultVegetation();
+    }
+
+    void LoadDefaultVegetation()
+    {
+        // 加载FBX模型
+        GameObject defaultVegetationPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/AssetStoreOriginals/APAC_Garden/Art/Models/Tree/beech_tree_05.FBX");
+        if (defaultVegetationPrefab != null)
+        {
+            // 如果列表为空，添加默认模型和计数
+            if (vegetationPrefabs.Count == 0)
+            {
+                vegetationPrefabs.Add(defaultVegetationPrefab);
+                vegetationCounts.Add(200);
+            }
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("Failed to load default vegetation prefab.");
+        }
+    }
+
+    void FindTerrainInScene()
+    {
+        // 查找场景中的第一个Terrain对象
+        Terrain foundTerrain = GameObject.FindObjectOfType<Terrain>();
+        if (foundTerrain != null)
+        {
+            terrain = foundTerrain;
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("No Terrain found in the current scene.");
+        }
+    }
+
+        void OnGUI()
     {
         GUILayout.Label("Vegetation Placement Settings", EditorStyles.boldLabel);
 
