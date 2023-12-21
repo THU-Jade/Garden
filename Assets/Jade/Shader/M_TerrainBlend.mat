@@ -109,7 +109,7 @@ Material:
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _ExcludeFromTUAndAA: 0
-    - _Grass_Tilling: 10
+    - _Grass_Tilling: 20
     - _Lerp_Strenth: 10
     - _OpaqueCullMode: 2
     - _RayTracing: 0
