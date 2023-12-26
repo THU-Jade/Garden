@@ -8,11 +8,15 @@ using System.Diagnostics;
 
 public class TerrainImporter : EditorWindow
 {
-    private string heightmapsFolder = "Assets/Jade/Heightmaps"; // 存放高度图的文件夹
+    private string heightmapsFolder = "Assets/Jade/new_hm"; // 存放高度图的文件夹
     private Material terrainMaterial; // 地形材质
-    private int terrainWidth = 1000; // 地形的宽度
-    private int terrainLength = 1000; // 地形的长度
-    private int terrainHeight = 600; // 地形的最大高度
+    private int terrainWidth = 440; // 地形的宽度
+    private int terrainLength = 440; // 地形的长度
+    private int terrainHeight = 100; // 地形的最大高度
+
+    private int resolution = 1024;
+    private int widthOffset = -20;
+    private int lengthOffset = -20;
 
     void OnEnable()
     {
@@ -42,6 +46,9 @@ public class TerrainImporter : EditorWindow
         terrainWidth = EditorGUILayout.IntField("Terrain Width", terrainWidth);
         terrainLength = EditorGUILayout.IntField("Terrain Length", terrainLength);
         terrainHeight = EditorGUILayout.IntField("Terrain Height", terrainHeight);
+        resolution = EditorGUILayout.IntField("Resolution", resolution);
+        widthOffset = EditorGUILayout.IntField("Width Offset", widthOffset);
+        lengthOffset = EditorGUILayout.IntField("Length Offset", lengthOffset);
 
         if (GUILayout.Button("Import Heightmaps"))
         {
@@ -73,9 +80,10 @@ public class TerrainImporter : EditorWindow
 
         // 创建地形
         TerrainData terrainData = new TerrainData();
-        terrainData.heightmapResolution = 512; // 根据需要调整
+        terrainData.heightmapResolution = 1024; // 根据需要调整
         terrainData.size = new Vector3(terrainWidth, terrainHeight, terrainLength);
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
+        terrainObject.transform.position = new Vector3(widthOffset, 0, lengthOffset);
 
         // 应用地形材质
         ApplyTerrainMaterial(terrainObject);
@@ -145,7 +153,7 @@ public class TerrainImporter : EditorWindow
             GameObject waterInstance = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab);
 
             // 自定义水体Y轴的数值
-            float customYValue = 50.0f; // 水体高度
+            float customYValue = 8f; // 水体高度
             Vector3 position = waterInstance.transform.position;
             position.y = customYValue;
             waterInstance.transform.position = position;
