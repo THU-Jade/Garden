@@ -8,29 +8,20 @@ using System.Diagnostics;
 
 public class TerrainImporter : EditorWindow
 {
-    private string heightmapsFolder = "Assets/Jade/new_hm"; // 存放高度图的文件夹
+    private string heightmapsFolder = "Assets/Jade/Heightmaps_Garden"; // 存放高度图的文件夹
+    private string labelmapsFolder = "Assets/Jade/Labelmaps_Garden"; // 存放label图的文件夹
+    private string jsonFolder = "Assets/Jade/Json_Garden"; // 存放json的文件夹
     private Material terrainMaterial; // 地形材质
     private int terrainWidth = 440; // 地形的宽度
     private int terrainLength = 440; // 地形的长度
-    private int terrainHeight = 100; // 地形的最大高度
+    private int terrainHeight = 80; // 地形的最大高度
+    private float waterHeight = 6.4f; // 地形的最大高度
 
     private int resolution = 1024;
     private int widthOffset = -20;
     private int lengthOffset = -20;
 
-    void OnEnable()
-    {
-        // 在OnEnable中加载默认材质//
-        LoadDefaultMaterial();
-    }
 
-    private void LoadDefaultMaterial()
-    {
-        if (terrainMaterial == null)
-        {
-            terrainMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Jade/Shader/M_TerrainBlend.mat");
-        }
-    }
 
     [MenuItem("Tools/Terrain Importer")]
     public static void ShowWindow()
@@ -42,10 +33,12 @@ public class TerrainImporter : EditorWindow
     {
         GUILayout.Label("Terrain Import Settings", EditorStyles.boldLabel);
         heightmapsFolder = EditorGUILayout.TextField("Heightmaps Folder", heightmapsFolder);
-        terrainMaterial = (Material)EditorGUILayout.ObjectField("Terrain Material", terrainMaterial, typeof(Material), false);
+        labelmapsFolder = EditorGUILayout.TextField("Labelmaps Folder", labelmapsFolder);
+        jsonFolder = EditorGUILayout.TextField("Json Folder", jsonFolder);
         terrainWidth = EditorGUILayout.IntField("Terrain Width", terrainWidth);
         terrainLength = EditorGUILayout.IntField("Terrain Length", terrainLength);
         terrainHeight = EditorGUILayout.IntField("Terrain Height", terrainHeight);
+        waterHeight = EditorGUILayout.FloatField("Water Height", waterHeight);
         resolution = EditorGUILayout.IntField("Resolution", resolution);
         widthOffset = EditorGUILayout.IntField("Width Offset", widthOffset);
         lengthOffset = EditorGUILayout.IntField("Length Offset", lengthOffset);
@@ -58,15 +51,25 @@ public class TerrainImporter : EditorWindow
 
     void ImportHeightmaps()
     {
-        string[] files = Directory.GetFiles(heightmapsFolder, "*.png"); // 可以根据您的高度图格式进行调整
+        string[] heightmapFiles = Directory.GetFiles(heightmapsFolder, "*.png");
+        string[] labelmapFiles = Directory.GetFiles(labelmapsFolder, "*.png");
+        string[] jsonFiles = Directory.GetFiles(jsonFolder, "*.json");
 
-        foreach (string file in files)
+        for (int i = 0; i < heightmapFiles.Length; i++)
         {
-            CreateTerrainFromHeightmap(file);
+            string labelmapPath = i < labelmapFiles.Length ? labelmapFiles[i] : null;
+            CreateTerrainFromHeightmap(heightmapFiles[i], labelmapPath);
+
+            if (i < jsonFiles.Length)
+            {
+                string jsonText = File.ReadAllText(jsonFiles[i]);
+                Scene activeScene = EditorSceneManager.GetActiveScene();
+                JsonTreePlacerEditor.PlaceTreesFromJson(jsonText, activeScene);
+            }
         }
     }
 
-    void CreateTerrainFromHeightmap(string heightmapPath)
+    void CreateTerrainFromHeightmap(string heightmapPath, string labelmapPath)
     {
         // 创建新场景
         Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
@@ -85,8 +88,8 @@ public class TerrainImporter : EditorWindow
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
         terrainObject.transform.position = new Vector3(widthOffset, 0, lengthOffset);
 
-        // 应用地形材质
-        ApplyTerrainMaterial(terrainObject);
+        // 创建并应用新的地形材质
+        ApplyNewTerrainMaterial(terrainObject, heightmapPath, labelmapPath);
 
         // 导入高度图
         byte[] heightmapBytes = File.ReadAllBytes(heightmapPath);
@@ -104,7 +107,7 @@ public class TerrainImporter : EditorWindow
 
         // 保存场景
         string sceneName = Path.GetFileNameWithoutExtension(heightmapPath);
-        EditorSceneManager.SaveScene(newScene, "Assets/Jade/Scenes/" + sceneName + ".unity");
+        EditorSceneManager.SaveScene(newScene, "Assets/Jade/Scene_Garden/" + sceneName + ".unity");
     }
 
     void CreateDirectionalLight()
@@ -124,20 +127,47 @@ public class TerrainImporter : EditorWindow
         // 设置光源方向
         lightGameObject.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
     }
+
     //指定材质
-    void ApplyTerrainMaterial(GameObject terrainObject)
+    void ApplyNewTerrainMaterial(GameObject terrainObject, string heightmapPath, string labelmapPath)
     {
-        if (terrainMaterial != null && terrainObject != null)
+        // 创建新材质
+        Shader terrainShader = Shader.Find("Shader Graphs/TerrainBlend"); // 确保Shader路径正确
+        if (terrainShader == null)
+        {
+            UnityEngine.Debug.LogError("TerrainBlend shader not found.");
+            return;
+        }
+
+        Material newTerrainMaterial = new Material(terrainShader);
+
+        // 应用标签图到材质
+        if (!string.IsNullOrEmpty(labelmapPath))
+        {
+            Texture2D labelmapTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(labelmapPath);
+            if (labelmapTexture != null)
+            {
+                newTerrainMaterial.SetTexture("_Tex_Blend", labelmapTexture);
+                UnityEngine.Debug.Log("Texture applied: " + labelmapPath);
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("Labelmap not found at path: " + labelmapPath);
+            }
+        }
+
+        // 保存新材质
+        string materialPath = "Assets/Jade/Mat_Garden/" + Path.GetFileNameWithoutExtension(heightmapPath) + "_Material.mat";
+        AssetDatabase.CreateAsset(newTerrainMaterial, materialPath);
+
+        // 应用新材质
+        if (terrainObject != null)
         {
             Terrain terrain = terrainObject.GetComponent<Terrain>();
             if (terrain != null)
             {
-                terrain.materialTemplate = terrainMaterial;
+                terrain.materialTemplate = newTerrainMaterial;
             }
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("No terrain material specified or terrain object is null.");
         }
     }
 
@@ -153,7 +183,7 @@ public class TerrainImporter : EditorWindow
             GameObject waterInstance = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab);
 
             // 自定义水体Y轴的数值
-            float customYValue = 8f; // 水体高度
+            float customYValue = waterHeight; // 水体高度
             Vector3 position = waterInstance.transform.position;
             position.y = customYValue;
             waterInstance.transform.position = position;
@@ -163,4 +193,5 @@ public class TerrainImporter : EditorWindow
             UnityEngine.Debug.LogError("Failed to load Global Volume prefab.");
         }
     }
+
 }

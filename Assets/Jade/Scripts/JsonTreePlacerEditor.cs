@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Diagnostics;
+using UnityEngine.SceneManagement; // 导入SceneManager命名空间
+using UnityEditor.SceneManagement; // 导入EditorSceneManager
 
 [Serializable]
 public class TreeData
@@ -62,22 +64,17 @@ public class JsonTreePlacerEditor : EditorWindow
 
         if (GUILayout.Button("Place Trees") && jsonFile != null)
         {
-            PlaceTreesFromJson(jsonFile.text);
+            //PlaceTreesFromJson(jsonFile.text);
         }
     }
 
-    private void PlaceTreesFromJson(string json)
+    public static void PlaceTreesFromJson(string json, Scene scene)
     {
         TreesData treesData = JsonUtility.FromJson<TreesData>(json);
 
         foreach (var tree in treesData.tree)
         {
-#if UNITY_EDITOR
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(tree.path);
-#else
-            GameObject model = null;
-#endif
-
             if (model == null)
             {
                 UnityEngine.Debug.LogWarning("Model not found at path: " + tree.path);
@@ -86,11 +83,21 @@ public class JsonTreePlacerEditor : EditorWindow
 
             foreach (var transformData in tree.transforms)
             {
-                GameObject instance = Instantiate(model, Vector3.zero, Quaternion.identity);
-                instance.transform.position = new Vector3(transformData.position.x, transformData.position.y, transformData.position.z);
-                instance.transform.rotation = new Quaternion(transformData.rotation.x, transformData.rotation.y, transformData.rotation.z, transformData.rotation.w);
-                instance.transform.localScale = new Vector3(transformData.scale.x, transformData.scale.y, transformData.scale.z);
+                GameObject instance = PrefabUtility.InstantiatePrefab(model) as GameObject;
+                if (instance != null)
+                {
+                    instance.transform.position = new Vector3(transformData.position.x, transformData.position.y, transformData.position.z);
+                    instance.transform.rotation = new Quaternion(transformData.rotation.x, transformData.rotation.y, transformData.rotation.z, transformData.rotation.w);
+                    instance.transform.localScale = new Vector3(transformData.scale.x, transformData.scale.y, transformData.scale.z);
+
+                    // 使实例成为场景的一部分
+                    SceneManager.MoveGameObjectToScene(instance, scene);
+                }
             }
         }
+
+        // 标记场景为“脏”，以保存更改
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
     }
 }
