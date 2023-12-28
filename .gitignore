@@ -4,3 +4,6 @@ Logs
 Save
 Temp
 Build
+ProjectSettings
+UserSettings
+Assets/StreamingAssets*

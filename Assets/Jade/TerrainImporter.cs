@@ -8,14 +8,17 @@ using System.Diagnostics;
 
 public class TerrainImporter : EditorWindow
 {
-    private string heightmapsFolder = "Assets/Jade/Heightmaps_Garden"; // 存放高度图的文件夹
-    private string labelmapsFolder = "Assets/Jade/Labelmaps_Garden"; // 存放label图的文件夹
-    private string jsonFolder = "Assets/Jade/Json_Garden"; // 存放json的文件夹
+    // private string heightmapsFolder = "Assets/Jade/Heightmaps_Garden"; // 存放高度图的文件夹
+    // private string labelmapsFolder = "Assets/Jade/Labelmaps_Garden"; // 存放label图的文件夹
+    // private string jsonFolder = "Assets/Jade/Json_Garden"; // 存放json的文件夹
+    private string inputFolder = "Assets/Jade/Inputs"; // 存所有输入文件
+    private string sceneFolder = "Assets/Jade/Scene_Garden"; // 存放场景的文件夹
+    private string matFolder = "Assets/Jade/Mat_Garden"; // 存放材质的文件夹
     private Material terrainMaterial; // 地形材质
     private int terrainWidth = 440; // 地形的宽度
     private int terrainLength = 440; // 地形的长度
     private int terrainHeight = 80; // 地形的最大高度
-    private float waterHeight = 6.4f; // 地形的最大高度
+    private float waterHeight = 6.4f; // 水体高度
 
     private int resolution = 1024;
     private int widthOffset = -20;
@@ -32,44 +35,72 @@ public class TerrainImporter : EditorWindow
     void OnGUI()
     {
         GUILayout.Label("Terrain Import Settings", EditorStyles.boldLabel);
-        heightmapsFolder = EditorGUILayout.TextField("Heightmaps Folder", heightmapsFolder);
-        labelmapsFolder = EditorGUILayout.TextField("Labelmaps Folder", labelmapsFolder);
-        jsonFolder = EditorGUILayout.TextField("Json Folder", jsonFolder);
-        terrainWidth = EditorGUILayout.IntField("Terrain Width", terrainWidth);
-        terrainLength = EditorGUILayout.IntField("Terrain Length", terrainLength);
-        terrainHeight = EditorGUILayout.IntField("Terrain Height", terrainHeight);
-        waterHeight = EditorGUILayout.FloatField("Water Height", waterHeight);
-        resolution = EditorGUILayout.IntField("Resolution", resolution);
-        widthOffset = EditorGUILayout.IntField("Width Offset", widthOffset);
-        lengthOffset = EditorGUILayout.IntField("Length Offset", lengthOffset);
+        // heightmapsFolder = EditorGUILayout.TextField("Heightmaps Folder", heightmapsFolder);
+        // labelmapsFolder = EditorGUILayout.TextField("Labelmaps Folder", labelmapsFolder);
+        // jsonFolder = EditorGUILayout.TextField("Json Folder", jsonFolder);
+        inputFolder = EditorGUILayout.TextField("Input Folder", inputFolder);
+        sceneFolder = EditorGUILayout.TextField("Scene Folder", sceneFolder);
+        matFolder = EditorGUILayout.TextField("Mat Folder", matFolder);
 
         if (GUILayout.Button("Import Heightmaps"))
         {
+            if (!Directory.Exists(sceneFolder))
+            {
+                Directory.CreateDirectory(sceneFolder);
+            }
+            if (!Directory.Exists(matFolder))
+            {
+                Directory.CreateDirectory(matFolder);
+            }
+            if (!Directory.Exists(inputFolder))
+            {
+                Directory.CreateDirectory(inputFolder);
+            }
             ImportHeightmaps();
         }
     }
 
     void ImportHeightmaps()
     {
-        string[] heightmapFiles = Directory.GetFiles(heightmapsFolder, "*.png");
-        string[] labelmapFiles = Directory.GetFiles(labelmapsFolder, "*.png");
-        string[] jsonFiles = Directory.GetFiles(jsonFolder, "*.json");
+        // string[] heightmapFiles = Directory.GetFiles(heightmapsFolder, "*.png");
+        // string[] labelmapFiles = Directory.GetFiles(labelmapsFolder, "*.png");
+        // string[] jsonFiles = Directory.GetFiles(jsonFolder, "*.json");
+        string[] jsonFiles = Directory.GetFiles(inputFolder, "*.json");
+        string firstSceneName = "";
 
-        for (int i = 0; i < heightmapFiles.Length; i++)
+        for (int i = 0; i < jsonFiles.Length; i++)
         {
-            string labelmapPath = i < labelmapFiles.Length ? labelmapFiles[i] : null;
-            CreateTerrainFromHeightmap(heightmapFiles[i], labelmapPath);
+            string sceneName = Path.GetFileNameWithoutExtension(jsonFiles[i]);
+            // parse json
+            string jsonText = File.ReadAllText(jsonFiles[i]);
+            JsonData jsonData = JsonUtility.FromJson<JsonData>(jsonText);
+            string heightmapPath = inputFolder + "/" + jsonData.height_map_path;
+            string labelmapPath = inputFolder + "/" + jsonData.label_map_path;
+            UnityEngine.Debug.Log(heightmapPath + " " + labelmapPath);
 
-            if (i < jsonFiles.Length)
+            // generate
+            terrainWidth = jsonData.map_width;
+            terrainLength = jsonData.map_height;
+            terrainHeight = jsonData.max_height;
+            waterHeight = jsonData.water_height;
+            widthOffset = jsonData.width_offset;
+            lengthOffset = jsonData.height_offset;
+            resolution = Mathf.Max(jsonData.real_width, jsonData.real_height);
+            CreateTerrainFromHeightmap(heightmapPath, labelmapPath, sceneName);
+
+            Scene activeScene = EditorSceneManager.GetActiveScene();
+            JsonTreePlacerEditor.PlaceTreesFromJson(jsonData, activeScene);
+            if (i == 0)
             {
-                string jsonText = File.ReadAllText(jsonFiles[i]);
-                Scene activeScene = EditorSceneManager.GetActiveScene();
-                JsonTreePlacerEditor.PlaceTreesFromJson(jsonText, activeScene);
+                firstSceneName = sceneName;
             }
         }
+        // close current scene and switch to first scene
+        // EditorSceneManager.CloseScene(EditorSceneManager.GetActiveScene(), true);
+        EditorSceneManager.OpenScene(sceneFolder + "/" + firstSceneName + ".unity");
     }
 
-    void CreateTerrainFromHeightmap(string heightmapPath, string labelmapPath)
+    void CreateTerrainFromHeightmap(string heightmapPath, string labelmapPath, string sceneName)
     {
         // 创建新场景
         Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
@@ -83,13 +114,13 @@ public class TerrainImporter : EditorWindow
 
         // 创建地形
         TerrainData terrainData = new TerrainData();
-        terrainData.heightmapResolution = 1024; // 根据需要调整
+        terrainData.heightmapResolution = resolution; // 根据需要调整
         terrainData.size = new Vector3(terrainWidth, terrainHeight, terrainLength);
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
         terrainObject.transform.position = new Vector3(widthOffset, 0, lengthOffset);
 
         // 创建并应用新的地形材质
-        ApplyNewTerrainMaterial(terrainObject, heightmapPath, labelmapPath);
+        ApplyNewTerrainMaterial(terrainObject, labelmapPath, sceneName);
 
         // 导入高度图
         byte[] heightmapBytes = File.ReadAllBytes(heightmapPath);
@@ -106,8 +137,12 @@ public class TerrainImporter : EditorWindow
         terrainData.SetHeights(0, 0, heights);
 
         // 保存场景
-        string sceneName = Path.GetFileNameWithoutExtension(heightmapPath);
-        EditorSceneManager.SaveScene(newScene, "Assets/Jade/Scene_Garden/" + sceneName + ".unity");
+        string savePath = sceneFolder + "/" + sceneName + ".unity";
+        if (File.Exists(savePath))
+        {
+            File.Delete(savePath);
+        }
+        EditorSceneManager.SaveScene(newScene, savePath);
     }
 
     void CreateDirectionalLight()
@@ -129,7 +164,7 @@ public class TerrainImporter : EditorWindow
     }
 
     //指定材质
-    void ApplyNewTerrainMaterial(GameObject terrainObject, string heightmapPath, string labelmapPath)
+    void ApplyNewTerrainMaterial(GameObject terrainObject, string labelmapPath, string sceneName)
     {
         // 创建新材质
         Shader terrainShader = Shader.Find("Shader Graphs/TerrainBlend"); // 确保Shader路径正确
@@ -157,8 +192,12 @@ public class TerrainImporter : EditorWindow
         }
 
         // 保存新材质
-        string materialPath = "Assets/Jade/Mat_Garden/" + Path.GetFileNameWithoutExtension(heightmapPath) + "_Material.mat";
-        AssetDatabase.CreateAsset(newTerrainMaterial, materialPath);
+        string savePath = matFolder + "/" + sceneName + "_Material.mat";
+        if (File.Exists(savePath))
+        {
+            File.Delete(savePath);
+        }
+        AssetDatabase.CreateAsset(newTerrainMaterial, savePath);
 
         // 应用新材质
         if (terrainObject != null)

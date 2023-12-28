@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Diagnostics;
-using UnityEngine.SceneManagement; // µ¼ÈëSceneManagerÃüÃû¿Õ¼ä
-using UnityEditor.SceneManagement; // µ¼ÈëEditorSceneManager
+using UnityEngine.SceneManagement; // ï¿½ï¿½ï¿½ï¿½SceneManagerï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½
+using UnityEditor.SceneManagement; // ï¿½ï¿½ï¿½ï¿½EditorSceneManager
 
 [Serializable]
 public class TreeData
@@ -41,9 +41,19 @@ public class QuaternionData
 }
 
 [Serializable]
-public class TreesData
+public class JsonData
 {
     public List<TreeData> tree;
+    public string height_map_path;
+    public string label_map_path;
+    public int max_height;
+    public float water_height;
+    public int map_width;
+    public int map_height;
+    public int real_width;
+    public int real_height;
+    public int width_offset;
+    public int height_offset;
 }
 
 public class JsonTreePlacerEditor : EditorWindow
@@ -68,11 +78,9 @@ public class JsonTreePlacerEditor : EditorWindow
         }
     }
 
-    public static void PlaceTreesFromJson(string json, Scene scene)
+    public static void PlaceTreesFromJson(JsonData jsonData, Scene scene)
     {
-        TreesData treesData = JsonUtility.FromJson<TreesData>(json);
-
-        foreach (var tree in treesData.tree)
+        foreach (var tree in jsonData.tree)
         {
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(tree.path);
             if (model == null)
@@ -90,14 +98,21 @@ public class JsonTreePlacerEditor : EditorWindow
                     instance.transform.rotation = new Quaternion(transformData.rotation.x, transformData.rotation.y, transformData.rotation.z, transformData.rotation.w);
                     instance.transform.localScale = new Vector3(transformData.scale.x, transformData.scale.y, transformData.scale.z);
 
-                    // Ê¹ÊµÀý³ÉÎª³¡¾°µÄÒ»²¿·Ö
+                    // Ê¹Êµï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½
                     SceneManager.MoveGameObjectToScene(instance, scene);
                 }
             }
         }
 
-        // ±ê¼Ç³¡¾°Îª¡°Ôà¡±£¬ÒÔ±£´æ¸ü¸Ä
+        // ï¿½ï¿½Ç³ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½à¡±ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
+    }
+
+    public static void PlaceTreesFromJson(string json, Scene scene)
+    {
+        JsonData jsonData = JsonUtility.FromJson<JsonData>(json);
+
+        PlaceTreesFromJson(jsonData, scene);
     }
 }
