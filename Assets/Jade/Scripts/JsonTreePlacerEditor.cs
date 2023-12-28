@@ -80,6 +80,7 @@ public class JsonTreePlacerEditor : EditorWindow
 
     public static void PlaceTreesFromJson(JsonData jsonData, Scene scene)
     {
+        GameObject vegetationParent = new GameObject("Vegetation");
         foreach (var tree in jsonData.tree)
         {
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>(tree.path);
@@ -88,6 +89,7 @@ public class JsonTreePlacerEditor : EditorWindow
                 UnityEngine.Debug.LogWarning("Model not found at path: " + tree.path);
                 continue;
             }
+            GameObject instanceParent = new GameObject(tree.name);
 
             foreach (var transformData in tree.transforms)
             {
@@ -97,14 +99,14 @@ public class JsonTreePlacerEditor : EditorWindow
                     instance.transform.position = new Vector3(transformData.position.x, transformData.position.y, transformData.position.z);
                     instance.transform.rotation = new Quaternion(transformData.rotation.x, transformData.rotation.y, transformData.rotation.z, transformData.rotation.w);
                     instance.transform.localScale = new Vector3(transformData.scale.x, transformData.scale.y, transformData.scale.z);
-
-                    // ʹʵ����Ϊ������һ����
-                    SceneManager.MoveGameObjectToScene(instance, scene);
+                    instance.transform.parent = instanceParent.transform;
                 }
             }
+            instanceParent.transform.parent = vegetationParent.transform;
         }
+        SceneManager.MoveGameObjectToScene(vegetationParent, scene);
 
-        // ��ǳ���Ϊ���ࡱ���Ա������
+        // ��ǳ����?���ࡱ���Ա������?
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
     }

@@ -76,16 +76,16 @@ public class TerrainImporter : EditorWindow
             JsonData jsonData = JsonUtility.FromJson<JsonData>(jsonText);
             string heightmapPath = inputFolder + "/" + jsonData.height_map_path;
             string labelmapPath = inputFolder + "/" + jsonData.label_map_path;
-            UnityEngine.Debug.Log(heightmapPath + " " + labelmapPath);
+            // UnityEngine.Debug.Log(heightmapPath + " " + labelmapPath);
 
             // generate
-            terrainWidth = jsonData.map_width;
-            terrainLength = jsonData.map_height;
+            terrainWidth = jsonData.real_width;
+            terrainLength = jsonData.real_height;
             terrainHeight = jsonData.max_height;
             waterHeight = jsonData.water_height;
             widthOffset = jsonData.width_offset;
             lengthOffset = jsonData.height_offset;
-            resolution = Mathf.Max(jsonData.real_width, jsonData.real_height);
+            resolution = Mathf.Max(jsonData.map_width, jsonData.map_height);
             CreateTerrainFromHeightmap(heightmapPath, labelmapPath, sceneName);
 
             Scene activeScene = EditorSceneManager.GetActiveScene();
