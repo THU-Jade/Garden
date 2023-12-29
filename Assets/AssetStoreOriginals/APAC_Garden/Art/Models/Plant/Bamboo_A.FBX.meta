@@ -91,7 +91,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Bamboo_Leaf_A
-    second: {fileID: 2100000, guid: 1ee01111bb691c348a61b9a5b38c8897, type: 2}
+    second: {fileID: 2100000, guid: 87c0137bd4c03ee43ab3a6cef7be44a5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

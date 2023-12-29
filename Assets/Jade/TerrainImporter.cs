@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Rendering;
 using System.IO;
 using System.Diagnostics;
+using UnityEngine.Rendering.HighDefinition; // 导入HDRP命名空间
+
 
 public class TerrainImporter : EditorWindow
 {
@@ -161,6 +163,9 @@ public class TerrainImporter : EditorWindow
 
         // 设置光源方向
         lightGameObject.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
+
+        // 添加HDRP特定的光源数据组件
+        HDAdditionalLightData hdLight = lightGameObject.AddComponent<HDAdditionalLightData>();
     }
 
     //指定材质
