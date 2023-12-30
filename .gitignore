@@ -6,6 +6,7 @@ Temp
 Build
 ProjectSettings
 UserSettings
+obj
 Assets/StreamingAssets*
 Assets/Jade/Scene
 Assets/Jade/Scene_Garden

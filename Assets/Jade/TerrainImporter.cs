@@ -109,7 +109,7 @@ public class TerrainImporter : EditorWindow
         EditorSceneManager.SetActiveScene(newScene);
 
         // 添加平行光
-        CreateDirectionalLight();
+        //CreateDirectionalLight();
 
         // 创建全局体积和水体
         GlobalPrefab();
