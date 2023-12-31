@@ -16,6 +16,7 @@ public class TerrainImporter : EditorWindow
     private string inputFolder = "Assets/Jade/Inputs"; // 存所有输入文件
     private string sceneFolder = "Assets/Jade/Scene_Garden"; // 存放场景的文件夹
     private string matFolder = "Assets/Jade/Mat_Garden"; // 存放材质的文件夹
+    private string imageFolder = "Assets/Jade/Image_Garden"; // 存放图片的文件夹
     private Material terrainMaterial; // 地形材质
     private int terrainWidth = 440; // 地形的宽度
     private int terrainLength = 440; // 地形的长度
@@ -58,6 +59,10 @@ public class TerrainImporter : EditorWindow
             {
                 Directory.CreateDirectory(inputFolder);
             }
+            if (!Directory.Exists(imageFolder))
+            {
+                Directory.CreateDirectory(imageFolder);
+            }
             ImportHeightmaps();
         }
     }
@@ -68,7 +73,7 @@ public class TerrainImporter : EditorWindow
         // string[] labelmapFiles = Directory.GetFiles(labelmapsFolder, "*.png");
         // string[] jsonFiles = Directory.GetFiles(jsonFolder, "*.json");
         string[] jsonFiles = Directory.GetFiles(inputFolder, "*.json");
-        string firstSceneName = "";
+        // string[] sceneNames= new string[jsonFiles.Length];
 
         for (int i = 0; i < jsonFiles.Length; i++)
         {
@@ -92,14 +97,42 @@ public class TerrainImporter : EditorWindow
 
             Scene activeScene = EditorSceneManager.GetActiveScene();
             JsonTreePlacerEditor.PlaceTreesFromJson(jsonData, activeScene);
-            if (i == 0)
-            {
-                firstSceneName = sceneName;
-            }
+            EditorSceneManager.OpenScene(activeScene.path, OpenSceneMode.Single);
+            Capture(terrainWidth, terrainWidth * jsonData.map_height / jsonData.map_width, widthOffset, lengthOffset);
+            // sceneNames[i] = sceneName;
         }
-        // close current scene and switch to first scene
-        // EditorSceneManager.CloseScene(EditorSceneManager.GetActiveScene(), true);
-        EditorSceneManager.OpenScene(sceneFolder + "/" + firstSceneName + ".unity");
+        // for(int i = 0; i < sceneNames.Length; i++)
+        // {
+        //     EditorSceneManager.OpenScene(EditorSceneManager.GetSceneByName(sceneNames[i]), OpenSceneMode.Single);
+        // }
+    }
+
+    void Capture(float xlength, float zlength, float xoffset, float zoffset)
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        string savePath = imageFolder + "/" + sceneName + ".png";
+
+        // float fov=60;
+        // float y= Mathf.Tan(fov * Mathf.Deg2Rad * 0.5f) * Mathf.Max(xlength, zlength);
+
+        GameObject camera = new GameObject("Camera");
+        camera.AddComponent<Camera>();
+        camera.transform.position = new Vector3(xlength / 2 + xoffset, 200, zlength / 2 + zoffset);
+        camera.transform.rotation = Quaternion.Euler(90, 0, 0);
+        camera.GetComponent<Camera>().orthographic = true;
+        camera.GetComponent<Camera>().orthographicSize = Mathf.Min(xlength, zlength) / 2;
+        int resx = 2048, resy = (int)(resx*zlength/xlength);
+        camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
+        camera.GetComponent<Camera>().Render();
+        RenderTexture.active = camera.GetComponent<Camera>().targetTexture;
+        Texture2D image = new Texture2D(resx, resy, TextureFormat.RGB24, false);
+        image.ReadPixels(new Rect(0, 0, resx, resy), 0, 0);
+        image.Apply();
+        byte[] bytes = image.EncodeToPNG();
+        File.WriteAllBytes(savePath, bytes);
+        DestroyImmediate(camera);
+
+        // ScreenCapture.CaptureScreenshot(savePath);
     }
 
     void CreateTerrainFromHeightmap(string heightmapPath, string labelmapPath, string sceneName)

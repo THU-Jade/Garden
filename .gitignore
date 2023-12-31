@@ -8,9 +8,10 @@ ProjectSettings
 UserSettings
 obj
 Assets/StreamingAssets*
-Assets/Jade/Scene
-Assets/Jade/Scene_Garden
-Assets/Jade/Mat_Garden
-Assets/Jade/Inputs
-Assets/Jade/new_hm
-Assets/Jade/Blend_Mask
+Assets/Jade/Scene*
+Assets/Jade/Scene_Garden*
+Assets/Jade/Mat_Garden*
+Assets/Jade/Image_Garden*
+Assets/Jade/Inputs*
+Assets/Jade/new_hm*
+Assets/Jade/Blend_Mask*
