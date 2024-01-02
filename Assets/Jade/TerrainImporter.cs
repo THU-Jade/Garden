@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering;
@@ -98,8 +99,9 @@ public class TerrainImporter : EditorWindow
             Scene activeScene = EditorSceneManager.GetActiveScene();
             JsonTreePlacerEditor.PlaceTreesFromJson(jsonData, activeScene);
             EditorSceneManager.OpenScene(activeScene.path, OpenSceneMode.Single);
-            Capture(terrainWidth, terrainWidth * jsonData.map_height / jsonData.map_width, widthOffset, lengthOffset);
-            // sceneNames[i] = sceneName;
+            CaptureBirdsEyeView(terrainWidth, terrainWidth * jsonData.map_height / jsonData.map_width, widthOffset, lengthOffset);
+            CaptureFrontView(terrainWidth, terrainWidth * jsonData.map_height / jsonData.map_width, widthOffset, lengthOffset);
+            CaptureRandomView(jsonData.viewpoints);
         }
         // for(int i = 0; i < sceneNames.Length; i++)
         // {
@@ -107,13 +109,76 @@ public class TerrainImporter : EditorWindow
         // }
     }
 
-    void Capture(float xlength, float zlength, float xoffset, float zoffset)
+    void CaptureRandomView(List<ViewpointsData> viewpoints)
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        GameObject camera = new GameObject("Camera");
+        camera.AddComponent<Camera>();
+        int resx = 2048, resy = (int)(resx * 9 / 16);
+        camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
+        for (int i = 0; i < viewpoints.Count; i++)
+        {
+            string savePath = imageFolder + "/" + sceneName + "_view" + i + ".png";
+            camera.transform.position = new Vector3(viewpoints[i].x, viewpoints[i].y, viewpoints[i].z);
+            camera.transform.rotation = Quaternion.Euler(viewpoints[i].xrot * 180 / Mathf.PI, viewpoints[i].yrot * 180 / Mathf.PI, 0);
+            camera.GetComponent<Camera>().Render();
+            RenderTexture.active = camera.GetComponent<Camera>().targetTexture;
+            Texture2D image = new Texture2D(resx, resy, TextureFormat.RGB24, false);
+            image.ReadPixels(new Rect(0, 0, resx, resy), 0, 0);
+            image.Apply();
+            byte[] bytes = image.EncodeToPNG();
+            File.WriteAllBytes(savePath, bytes);
+        }
+        DestroyImmediate(camera);
+    }
+
+    void CaptureFrontView(float xlength, float zlength, float xoffset, float zoffset)
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        GameObject camera = new GameObject("Camera");
+        camera.AddComponent<Camera>();
+        int resx = 2048, resy = (int)(resx * 9 / 16);
+        camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
+        for (int i = 0; i < 4; i++)
+        {
+            if (i == 0)
+            {
+                camera.transform.position = new Vector3(xlength / 2 + xoffset, 50, -50);
+                camera.transform.rotation = Quaternion.Euler(15, 0, 0);
+            }
+            else if (i == 1)
+            {
+                camera.transform.position = new Vector3(xlength / 2 + xoffset, 50, zlength + zoffset + 50);
+                camera.transform.rotation = Quaternion.Euler(15, 180, 0);
+            }
+            else if (i == 2)
+            {
+                camera.transform.position = new Vector3(-50, 50, zlength / 2 + zoffset);
+                camera.transform.rotation = Quaternion.Euler(15, 90, 0);
+            }
+            else
+            {
+                camera.transform.position = new Vector3(xlength + xoffset + 50, 50, zlength / 2 + zoffset);
+                camera.transform.rotation = Quaternion.Euler(15, -90, 0);
+            }
+            string savePath = imageFolder + "/" + sceneName + "_front" + i + ".png";
+            camera.GetComponent<Camera>().Render();
+            RenderTexture.active = camera.GetComponent<Camera>().targetTexture;
+            Texture2D image = new Texture2D(resx, resy, TextureFormat.RGB24, false);
+            image.ReadPixels(new Rect(0, 0, resx, resy), 0, 0);
+            image.Apply();
+            byte[] bytes = image.EncodeToPNG();
+            File.WriteAllBytes(savePath, bytes);
+        }
+        DestroyImmediate(camera);
+    }
+
+    void CaptureBirdsEyeView(float xlength, float zlength, float xoffset, float zoffset)
     {
         string sceneName = SceneManager.GetActiveScene().name;
         string savePath = imageFolder + "/" + sceneName + ".png";
-
-        // float fov=60;
-        // float y= Mathf.Tan(fov * Mathf.Deg2Rad * 0.5f) * Mathf.Max(xlength, zlength);
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
@@ -121,8 +186,8 @@ public class TerrainImporter : EditorWindow
         camera.transform.rotation = Quaternion.Euler(90, 0, 0);
         camera.GetComponent<Camera>().orthographic = true;
         camera.GetComponent<Camera>().orthographicSize = Mathf.Min(xlength, zlength) / 2;
-        camera.GetComponent<Camera>().nearClipPlane = 0.3f;
-        int resx = 2048, resy = (int)(resx*zlength/xlength);
+        camera.GetComponent<Camera>().nearClipPlane = 3f;
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         camera.GetComponent<Camera>().Render();
         RenderTexture.active = camera.GetComponent<Camera>().targetTexture;

@@ -16,6 +16,16 @@ public class TreeData
 }
 
 [Serializable]
+public class ViewpointsData
+{
+    public float x;
+    public float y;
+    public float z;
+    public float xrot;
+    public float yrot;
+}
+
+[Serializable]
 public class TransformData
 {
     public VectorData position;
@@ -54,6 +64,7 @@ public class JsonData
     public int real_height;
     public int width_offset;
     public int height_offset;
+    public List<ViewpointsData> viewpoints;
 }
 
 public class JsonTreePlacerEditor : EditorWindow
@@ -106,7 +117,7 @@ public class JsonTreePlacerEditor : EditorWindow
         }
         SceneManager.MoveGameObjectToScene(vegetationParent, scene);
 
-        // ��ǳ����?���ࡱ���Ա������?
+        // ��ǳ����?���ࡱ���Ա������?
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
     }
