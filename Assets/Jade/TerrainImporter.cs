@@ -121,6 +121,7 @@ public class TerrainImporter : EditorWindow
         camera.transform.rotation = Quaternion.Euler(90, 0, 0);
         camera.GetComponent<Camera>().orthographic = true;
         camera.GetComponent<Camera>().orthographicSize = Mathf.Min(xlength, zlength) / 2;
+        camera.GetComponent<Camera>().nearClipPlane = 0.3f;
         int resx = 2048, resy = (int)(resx*zlength/xlength);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         camera.GetComponent<Camera>().Render();
