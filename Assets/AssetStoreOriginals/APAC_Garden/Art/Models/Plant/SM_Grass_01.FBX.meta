@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b943539ef8dbb8e45af7113b35fd680c
+guid: bd4134514f1e1a54d9addda2112deddb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,34 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: MI_TreeOak_Leaves3
-    second: {fileID: 2100000, guid: a89122246ba152840bdb5e279633c5d8, type: 2}
+      name: MI_Grass_01
+    second: {fileID: 2100000, guid: b2303d89d604ef54b8544051f56fccc7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: MI_TreeOak_Leaves4
-    second: {fileID: 2100000, guid: a89122246ba152840bdb5e279633c5d8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: default_material
-    second: {fileID: 2100000, guid: a89122246ba152840bdb5e279633c5d8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: default_material4
-    second: {fileID: 2100000, guid: a89122246ba152840bdb5e279633c5d8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: default_material7
-    second: {fileID: 7146438750258300944, guid: 8ea4d9b8b8edcf84eb3dd453c78f0905,
-      type: 3}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: m_Pcg_gysC5
-    second: {fileID: 2100000, guid: a89122246ba152840bdb5e279633c5d8, type: 2}
+      name: MI_Grass_01_LOD
+    second: {fileID: 2100000, guid: b2303d89d604ef54b8544051f56fccc7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -66,8 +45,8 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages:
-    - 0.0034064576
-    - 0.0004856321
+    - 0.086322136
+    - 0.020202352
     globalScale: 1
     meshCompression: 0
     addColliders: 0
