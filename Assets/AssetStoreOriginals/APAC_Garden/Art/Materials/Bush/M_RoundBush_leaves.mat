@@ -160,7 +160,7 @@ Material:
     - _ATDistance: 1
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
-    - _AlphaCutoff: 0.484
+    - _AlphaCutoff: 0.1
     - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
@@ -179,7 +179,7 @@ Material:
     - _CullFarStart: 60
     - _CullMode: 0
     - _CullModeForward: 0
-    - _Cutoff: 0.484
+    - _Cutoff: 0.1
     - _DISTANCEBLEND: 0
     - _DepthOffsetEnable: 0
     - _DetailAlbedoScale: 1
@@ -313,9 +313,9 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.6980397, g: 0.735849, b: 0.32071906, a: 1}
+    - _BaseColor: {r: 0.5071264, g: 0.5245282, b: 0.31570658, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.6980397, g: 0.735849, b: 0.32071903, a: 1}
+    - _Color: {r: 0.5071264, g: 0.5245282, b: 0.31570655, a: 1}
     - _DiffusionProfileAsset: {r: -1.8019567e-30, g: 2.8583547e+22, b: 2.0825967e+12,
         a: 8.838735e-11}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
