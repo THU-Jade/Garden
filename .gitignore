@@ -7,6 +7,7 @@ Build
 ProjectSettings
 UserSettings
 obj
+Recordings
 Assets/StreamingAssets*
 Assets/Jade/Scene*
 Assets/Jade/Scene_Garden*
