@@ -6,23 +6,23 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Rendering;
 using System.IO;
 using System.Diagnostics;
-using UnityEngine.Rendering.HighDefinition; // µ¼ÈëHDRPÃüÃû¿Õ¼ä
+using UnityEngine.Rendering.HighDefinition; // ï¿½ï¿½ï¿½ï¿½HDRPï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½
 
 
 public class TerrainImporter : EditorWindow
 {
-    // private string heightmapsFolder = "Assets/Jade/Heightmaps_Garden"; // ´æ·Å¸ß¶ÈÍ¼µÄÎÄ¼þ¼Ð
-    // private string labelmapsFolder = "Assets/Jade/Labelmaps_Garden"; // ´æ·ÅlabelÍ¼µÄÎÄ¼þ¼Ð
-    // private string jsonFolder = "Assets/Jade/Json_Garden"; // ´æ·ÅjsonµÄÎÄ¼þ¼Ð
-    private string inputFolder = "Assets/Jade/Inputs"; // ´æËùÓÐÊäÈëÎÄ¼þ
-    private string sceneFolder = "Assets/Jade/Scene_Garden"; // ´æ·Å³¡¾°µÄÎÄ¼þ¼Ð
-    private string matFolder = "Assets/Jade/Mat_Garden"; // ´æ·Å²ÄÖÊµÄÎÄ¼þ¼Ð
-    private string imageFolder = "Assets/Jade/Image_Garden"; // ´æ·ÅÍ¼Æ¬µÄÎÄ¼þ¼Ð
-    private Material terrainMaterial; // µØÐÎ²ÄÖÊ
-    private int terrainWidth = 440; // µØÐÎµÄ¿í¶È
-    private int terrainLength = 440; // µØÐÎµÄ³¤¶È
-    private int terrainHeight = 80; // µØÐÎµÄ×î´ó¸ß¶È
-    private float waterHeight = 6.4f; // Ë®Ìå¸ß¶È
+    // private string heightmapsFolder = "Assets/Jade/Heightmaps_Garden"; // ï¿½ï¿½Å¸ß¶ï¿½Í¼ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+    // private string labelmapsFolder = "Assets/Jade/Labelmaps_Garden"; // ï¿½ï¿½ï¿½labelÍ¼ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+    // private string jsonFolder = "Assets/Jade/Json_Garden"; // ï¿½ï¿½ï¿½jsonï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+    private string inputFolder = "Assets/Jade/Inputs"; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+    private string sceneFolder = "Assets/Jade/Scene_Garden"; // ï¿½ï¿½Å³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+    private string matFolder = "Assets/Jade/Mat_Garden"; // ï¿½ï¿½Å²ï¿½ï¿½Êµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+    private string imageFolder = "Assets/Jade/Image_Garden"; // ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+    private Material terrainMaterial; // ï¿½ï¿½ï¿½Î²ï¿½ï¿½ï¿½
+    private int terrainWidth = 440; // ï¿½ï¿½ï¿½ÎµÄ¿ï¿½ï¿½ï¿½
+    private int terrainLength = 440; // ï¿½ï¿½ï¿½ÎµÄ³ï¿½ï¿½ï¿½
+    private int terrainHeight = 80; // ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ß¶ï¿½
+    private float waterHeight = 6.4f; // Ë®ï¿½ï¿½ß¶ï¿½
 
     private int resolution = 1024;
     private int widthOffset = -20;
@@ -115,7 +115,7 @@ public class TerrainImporter : EditorWindow
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
-        int resx = 2048, resy = (int)(resx * 9 / 16);
+        int resx = 1024, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         for (int i = 0; i < viewpoints.Count; i++)
         {
@@ -139,7 +139,7 @@ public class TerrainImporter : EditorWindow
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
-        int resx = 2048, resy = (int)(resx * 9 / 16);
+        int resx = 1024, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         for (int i = 0; i < 4; i++)
         {
@@ -187,7 +187,7 @@ public class TerrainImporter : EditorWindow
         camera.GetComponent<Camera>().orthographic = true;
         camera.GetComponent<Camera>().orthographicSize = Mathf.Min(xlength, zlength) / 2;
         camera.GetComponent<Camera>().nearClipPlane = 3f;
-        int resx = 2048, resy = (int)(resx * 9 / 16);
+        int resx = 1024, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         camera.GetComponent<Camera>().Render();
         RenderTexture.active = camera.GetComponent<Camera>().targetTexture;
@@ -203,27 +203,27 @@ public class TerrainImporter : EditorWindow
 
     void CreateTerrainFromHeightmap(string heightmapPath, string labelmapPath, string sceneName)
     {
-        // ´´½¨ÐÂ³¡¾°
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½
         Scene newScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
         EditorSceneManager.SetActiveScene(newScene);
 
-        // Ìí¼ÓÆ½ÐÐ¹â
+        // ï¿½ï¿½ï¿½ï¿½Æ½ï¿½Ð¹ï¿½
         //CreateDirectionalLight();
 
-        // ´´½¨È«¾ÖÌå»ýºÍË®Ìå
+        // ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ï¿½
         GlobalPrefab();
 
-        // ´´½¨µØÐÎ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         TerrainData terrainData = new TerrainData();
-        terrainData.heightmapResolution = resolution; // ¸ù¾ÝÐèÒªµ÷Õû
+        terrainData.heightmapResolution = resolution; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
         terrainData.size = new Vector3(terrainWidth, terrainHeight, terrainLength);
         GameObject terrainObject = Terrain.CreateTerrainGameObject(terrainData);
         terrainObject.transform.position = new Vector3(widthOffset, 0, lengthOffset);
 
-        // ´´½¨²¢Ó¦ÓÃÐÂµÄµØÐÎ²ÄÖÊ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÂµÄµï¿½ï¿½Î²ï¿½ï¿½ï¿½
         ApplyNewTerrainMaterial(terrainObject, labelmapPath, sceneName);
 
-        // µ¼Èë¸ß¶ÈÍ¼
+        // ï¿½ï¿½ï¿½ï¿½ß¶ï¿½Í¼
         byte[] heightmapBytes = File.ReadAllBytes(heightmapPath);
         Texture2D heightmapTexture = new Texture2D(2, 2);
         heightmapTexture.LoadImage(heightmapBytes);
@@ -237,7 +237,7 @@ public class TerrainImporter : EditorWindow
         }
         terrainData.SetHeights(0, 0, heights);
 
-        // ±£´æ³¡¾°
+        // ï¿½ï¿½ï¿½æ³¡ï¿½ï¿½
         string savePath = sceneFolder + "/" + sceneName + ".unity";
         if (File.Exists(savePath))
         {
@@ -248,30 +248,30 @@ public class TerrainImporter : EditorWindow
 
     void CreateDirectionalLight()
     {
-        // ´´½¨ÐÂµÄ¹âÔ´¶ÔÏó
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ÂµÄ¹ï¿½Ô´ï¿½ï¿½ï¿½ï¿½
         GameObject lightGameObject = new GameObject("Directional Light");
         Light lightComp = lightGameObject.AddComponent<Light>();
 
-        // ÉèÖÃ¹âÔ´ÊôÐÔ
+        // ï¿½ï¿½ï¿½Ã¹ï¿½Ô´ï¿½ï¿½ï¿½ï¿½
         lightComp.type = LightType.Directional;
         lightComp.color = Color.white;
         lightComp.intensity = 1.5f;
 
-        // ¿ªÆôÒõÓ°
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó°
         lightComp.shadows = LightShadows.Soft;
 
-        // ÉèÖÃ¹âÔ´·½Ïò
+        // ï¿½ï¿½ï¿½Ã¹ï¿½Ô´ï¿½ï¿½ï¿½ï¿½
         lightGameObject.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
 
-        // Ìí¼ÓHDRPÌØ¶¨µÄ¹âÔ´Êý¾Ý×é¼þ
+        // ï¿½ï¿½ï¿½ï¿½HDRPï¿½Ø¶ï¿½ï¿½Ä¹ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         HDAdditionalLightData hdLight = lightGameObject.AddComponent<HDAdditionalLightData>();
     }
 
-    //Ö¸¶¨²ÄÖÊ
+    //Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void ApplyNewTerrainMaterial(GameObject terrainObject, string labelmapPath, string sceneName)
     {
-        // ´´½¨ÐÂ²ÄÖÊ
-        Shader terrainShader = Shader.Find("Shader Graphs/TerrainBlend"); // È·±£ShaderÂ·¾¶ÕýÈ·
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
+        Shader terrainShader = Shader.Find("Shader Graphs/TerrainBlend"); // È·ï¿½ï¿½ShaderÂ·ï¿½ï¿½ï¿½ï¿½È·
         if (terrainShader == null)
         {
             UnityEngine.Debug.LogError("TerrainBlend shader not found.");
@@ -280,7 +280,7 @@ public class TerrainImporter : EditorWindow
 
         Material newTerrainMaterial = new Material(terrainShader);
 
-        // Ó¦ÓÃ±êÇ©Í¼µ½²ÄÖÊ
+        // Ó¦ï¿½Ã±ï¿½Ç©Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (!string.IsNullOrEmpty(labelmapPath))
         {
             Texture2D labelmapTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(labelmapPath);
@@ -295,7 +295,7 @@ public class TerrainImporter : EditorWindow
             }
         }
 
-        // ±£´æÐÂ²ÄÖÊ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
         string savePath = matFolder + "/" + sceneName + "_Material.mat";
         if (File.Exists(savePath))
         {
@@ -303,7 +303,7 @@ public class TerrainImporter : EditorWindow
         }
         AssetDatabase.CreateAsset(newTerrainMaterial, savePath);
 
-        // Ó¦ÓÃÐÂ²ÄÖÊ
+        // Ó¦ï¿½ï¿½ï¿½Â²ï¿½ï¿½ï¿½
         if (terrainObject != null)
         {
             Terrain terrain = terrainObject.GetComponent<Terrain>();
@@ -316,17 +316,17 @@ public class TerrainImporter : EditorWindow
 
     void GlobalPrefab()
     {
-        // ¼ÓÔØPrefab
+        // ï¿½ï¿½ï¿½ï¿½Prefab
         GameObject globalVolumePrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Jade/Environment/Global Volume.prefab");
         GameObject waterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Jade/Environment/Water System.prefab");
         if (globalVolumePrefab != null && waterPrefab != null)
         {
-            // ÊµÀý»¯Prefabµ½µ±Ç°¼¤»îµÄ³¡¾°ÖÐ
+            // Êµï¿½ï¿½ï¿½ï¿½Prefabï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½
             PrefabUtility.InstantiatePrefab(globalVolumePrefab);
             GameObject waterInstance = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab);
 
-            // ×Ô¶¨ÒåË®ÌåYÖáµÄÊýÖµ
-            float customYValue = waterHeight; // Ë®Ìå¸ß¶È
+            // ï¿½Ô¶ï¿½ï¿½ï¿½Ë®ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+            float customYValue = waterHeight; // Ë®ï¿½ï¿½ß¶ï¿½
             Vector3 position = waterInstance.transform.position;
             position.y = customYValue;
             waterInstance.transform.position = position;
