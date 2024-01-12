@@ -23,6 +23,15 @@ public class ViewpointsData
     public float z;
     public float xrot;
     public float yrot;
+
+    public ViewpointsData(float x, float y, float z, float xrot, float yrot)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.xrot = xrot;
+        this.yrot = yrot;
+    }
 }
 
 [Serializable]
