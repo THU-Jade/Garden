@@ -115,7 +115,7 @@ public class TerrainImporter : EditorWindow
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
-        int resx = 1024, resy = (int)(resx * 9 / 16);
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         for (int i = 0; i < viewpoints.Count; i++)
         {
@@ -139,28 +139,28 @@ public class TerrainImporter : EditorWindow
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
-        int resx = 1024, resy = (int)(resx * 9 / 16);
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         for (int i = 0; i < 4; i++)
         {
             if (i == 0)
             {
-                camera.transform.position = new Vector3(xlength / 2 + xoffset, 50, -50);
+                camera.transform.position = new Vector3(xlength / 2 + xoffset, 50, -30 + zoffset);
                 camera.transform.rotation = Quaternion.Euler(15, 0, 0);
             }
             else if (i == 1)
             {
-                camera.transform.position = new Vector3(xlength / 2 + xoffset, 50, zlength + zoffset + 50);
+                camera.transform.position = new Vector3(xlength / 2 + xoffset, 50, zlength + zoffset + 30);
                 camera.transform.rotation = Quaternion.Euler(15, 180, 0);
             }
             else if (i == 2)
             {
-                camera.transform.position = new Vector3(-50, 50, zlength / 2 + zoffset);
+                camera.transform.position = new Vector3(-30 + xoffset, 50, zlength / 2 + zoffset);
                 camera.transform.rotation = Quaternion.Euler(15, 90, 0);
             }
             else
             {
-                camera.transform.position = new Vector3(xlength + xoffset + 50, 50, zlength / 2 + zoffset);
+                camera.transform.position = new Vector3(xlength + xoffset + 30, 50, zlength / 2 + zoffset);
                 camera.transform.rotation = Quaternion.Euler(15, -90, 0);
             }
             string savePath = imageFolder + "/" + sceneName + "_front" + i + ".png";
@@ -187,7 +187,7 @@ public class TerrainImporter : EditorWindow
         camera.GetComponent<Camera>().orthographic = true;
         camera.GetComponent<Camera>().orthographicSize = Mathf.Min(xlength, zlength) / 2;
         camera.GetComponent<Camera>().nearClipPlane = 3f;
-        int resx = 1024, resy = (int)(resx * 9 / 16);
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         camera.GetComponent<Camera>().Render();
         RenderTexture.active = camera.GetComponent<Camera>().targetTexture;

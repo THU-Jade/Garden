@@ -1,0 +1,12 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Mat3d66_631527_2_1
+Ka 0.000000 0.000000 0.000000
+Kd 0.737255 0.709804 0.650980
+Ks 0.330000 0.330000 0.330000
+map_Kd small_rock_cobble01/Mat3d66_631527_2_1.jpg
+
+g
+

@@ -98,7 +98,7 @@ public class SceneRenderer : EditorWindow
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
-        int resx = 1024, resy = (int)(resx * 9 / 16);
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         for (int i = 0; i < viewpoints.Count; i++)
         {
@@ -122,13 +122,13 @@ public class SceneRenderer : EditorWindow
 
         GameObject camera = new GameObject("Camera");
         camera.AddComponent<Camera>();
-        int resx = 1024, resy = (int)(resx * 9 / 16);
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         for (int i = 0; i < 4; i++)
         {
             if (i == 0)
             {
-                camera.transform.position = new Vector3((minx + maxx) / 2, 50, minz-50);
+                camera.transform.position = new Vector3((minx + maxx) / 2, 50, minz - 50);
                 camera.transform.rotation = Quaternion.Euler(15, 0, 0);
             }
             else if (i == 1)
@@ -138,7 +138,7 @@ public class SceneRenderer : EditorWindow
             }
             else if (i == 2)
             {
-                camera.transform.position = new Vector3(minx-50, 50, (minz + maxz) / 2);
+                camera.transform.position = new Vector3(minx - 50, 50, (minz + maxz) / 2);
                 camera.transform.rotation = Quaternion.Euler(15, 90, 0);
             }
             else
@@ -170,7 +170,7 @@ public class SceneRenderer : EditorWindow
         camera.GetComponent<Camera>().orthographic = true;
         camera.GetComponent<Camera>().orthographicSize = Mathf.Min(width, height) / 2;
         camera.GetComponent<Camera>().nearClipPlane = 3f;
-        int resx = 1024, resy = (int)(resx * 9 / 16);
+        int resx = 2048, resy = (int)(resx * 9 / 16);
         camera.GetComponent<Camera>().targetTexture = new RenderTexture(resx, resy, 24);
         camera.GetComponent<Camera>().Render();
         RenderTexture.active = camera.GetComponent<Camera>().targetTexture;

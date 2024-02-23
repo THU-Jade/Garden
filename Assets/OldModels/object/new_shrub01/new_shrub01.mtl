@@ -1,0 +1,13 @@
+# Blender MTL File: '新灌木模型.blend'
+# Material Count: 1
+
+newmtl wire_135110008
+Ns 32.000008
+Ka 1.000000 1.000000 1.000000
+Kd 0.110656 0.238305 0.028347
+Ks 0.350000 0.350000 0.350000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd ../../texture/leaf_gradient.jpg

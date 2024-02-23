@@ -1,0 +1,33 @@
+
+newmtl Flower_Buds
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ../../texture/park_flower_bud_BaseColor.png
+
+
+
+newmtl Flower_Leaves
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ../../texture/park_flower_BaseColor.png
+
+
+
+newmtl Flower_Stem
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ../../texture/stem_BaseColor.png
+
+
